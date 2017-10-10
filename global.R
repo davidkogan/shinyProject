@@ -59,6 +59,14 @@ teams = nfl %>%
   unique(.) %>%
   rename(., Team = Offense)
 
+#Quarterbacks
+quarterbacks = nfl %>%
+  filter(., !(is.na(Passer) | Passer == '')) %>%
+  select(., Offense, Passer) %>%
+  arrange(., Offense, Passer) %>%
+  unique(.) %>%
+  rename(., Team = Offense)
+
 #Receivers
 receivers = nfl %>%
   filter(., !(is.na(Receiver) | Receiver == '')) %>%

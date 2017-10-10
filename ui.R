@@ -13,6 +13,7 @@ shinyUI(dashboardPage(
                menuSubItem('First Downs', tabName = 'firstdown'),
                menuSubItem('Pass vs Rush', tabName = 'teampr')),
       menuItem('Players', tabName = 'players',
+               menuSubItem('Quarterbacks', tabName = 'qb'),
                menuSubItem('Receivers', tabName = 'receiver'),
                menuSubItem('Running Backs', tabName = 'rusher')),
       selectInput(inputId = 'team',
@@ -59,6 +60,20 @@ shinyUI(dashboardPage(
                     plotlyOutput('playtype_success_vs_fieldpos'))
               )
               ), 
+      tabItem(tabName = 'qb', 
+              fluidRow(
+                box(
+                  title = 'Quarterback',
+                  uiOutput("qbselected"),
+                  selectInput(inputId = 'qbstatselected',
+                              label = 'Breakdown of Passes By:',
+                              choices = c('Down', 'YardsToFirst', 'YardLine', 
+                                          'PassLocation', 'PassLength'))
+                ),
+                box(
+                  plotOutput('qbgraph1')
+                )
+              )),
       tabItem(tabName = 'receiver', 
               fluidRow(
                 box(

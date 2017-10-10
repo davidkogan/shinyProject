@@ -153,6 +153,13 @@ shinyServer(function(input, output, session){
       scale_fill_gradient(low='red', high='green')
   })
   
+  output$qbselected <- renderUI({
+    selectInput(inputId = 'qbselected',
+                label = 'Select Quarterback:',
+                choices = quarterbacks[quarterbacks$Team 
+                                    == input$team, 'Passer'])
+  })
+  
   output$receiverselected <- renderUI({
     selectInput(inputId = 'receiverselected',
                 label = 'Select Receiver:',
@@ -165,6 +172,17 @@ shinyServer(function(input, output, session){
                 label = 'Select Running Back:',
                 choices = rushers[rushers$Team
                                   == input$team, 'Rusher'])
+  })
+  
+  output$qbgraph1 <- renderPlot({
+    
+    nfl %>%
+      filter(., Passer == 
+               input$qbselected, !is.na(Down), YardsToFirst <= 10) %>%
+      group_by_(., input$qbstatselected) %>%
+      summarise(., AvgYards = median(Yards.Gained)) %>%
+      ggplot(., aes_string(x=input$qbstatselected,y='AvgYards')) +
+      geom_col(fill='blue')
   })
   
   output$receivergraph1 <- renderPlot({
