@@ -39,7 +39,7 @@ shinyServer(function(input, output, session){
       ggplot(., aes(x=YardLine, y=AvgYards)) + geom_smooth() + facet_grid(.~PlayType)
   })
   
-  output$eventual_first_down_probs <- renderPlotly({
+  output$eventual_first_down_probs <- renderPlot({
     #Probabilities on fourth down
     fourthprobs = nfl %>%
       filter(., Offense == input$team, Down == 4, YardsToFirst <= 20) %>%
@@ -130,7 +130,9 @@ shinyServer(function(input, output, session){
     probfirstDown %>%
       ggplot(., aes(x=Down, y=YardsToGo, z=ProbFirst)) +
       geom_tile(aes(fill= ProbFirst)) +
-      scale_fill_gradient(low = 'red', high = 'green')
+      scale_fill_gradient(low = 'red', high = 'green') +
+      geom_text(aes(label=round(ProbFirst, 3))) +
+      ggtitle('Likelihood of Eventual First Down')
   })
   
   output$passyards <- renderPlotly({
@@ -179,10 +181,8 @@ shinyServer(function(input, output, session){
     nfl %>%
       filter(., Passer == 
                input$qbselected, !is.na(Down), YardsToFirst <= 10) %>%
-      group_by_(., input$qbstatselected) %>%
-      summarise(., AvgYards = median(Yards.Gained)) %>%
-      ggplot(., aes_string(x=input$qbstatselected,y='AvgYards')) +
-      geom_col(fill='blue')
+      ggplot(., aes_string(x=input$qbstatselected,y='Yards.Gained')) +
+      geom_boxplot(fill='blue')
   })
   
   output$receivergraph1 <- renderPlot({
@@ -204,10 +204,8 @@ shinyServer(function(input, output, session){
     nfl %>%
       filter(., Receiver == 
                input$receiverselected, !is.na(Down), YardsToFirst <= 10) %>%
-      group_by_(., input$receiverstatselected) %>%
-      summarise(., AvgYards = median(Yards.Gained)) %>%
-      ggplot(., aes_string(x=input$receiverstatselected,y='AvgYards')) +
-      geom_col(fill='blue')
+      ggplot(., aes_string(x=input$receiverstatselected,y='Yards.Gained')) +
+      geom_boxplot(fill='blue')
   })
     
   output$rushergraph1 <- renderPlot({
@@ -223,13 +221,11 @@ shinyServer(function(input, output, session){
     })
   
   output$rushergraph2 <- renderPlot({
-    
+  
     nfl %>%
       filter(., Rusher ==
                input$rusherselected, !is.na(Down), YardsToFirst <= 10) %>%
-      group_by_(., input$rusherstatselected) %>%
-      summarise(., AvgYards = median(Yards.Gained)) %>%
-      ggplot(., aes_string(x=input$rusherstatselected,y='AvgYards')) +
-      geom_col(fill='blue')
+      ggplot(., aes_string(x=input$rusherstatselected, y='Yards.Gained')) +
+      geom_boxplot(fill='blue')
   })
 })

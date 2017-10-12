@@ -34,6 +34,9 @@ nfl = nfl %>%
 nfl = nfl %>%
   rename(., Interception = InterceptionThrown)
 
+#Convert Down to factor
+nfl$Down = factor(nfl$Down)
+
 #Add columns for points scored per play
 nfl = nfl %>%
   mutate(., FieldGoalResult = 

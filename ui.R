@@ -43,7 +43,7 @@ shinyUI(dashboardPage(
       ),
       tabItem(tabName = 'firstdown',
               fluidRow(
-                    plotlyOutput('eventual_first_down_probs', height = 575, width = 800)
+                    plotOutput('eventual_first_down_probs', height = 575, width = 800)
               )
       ),
       tabItem(tabName = 'teampr',
