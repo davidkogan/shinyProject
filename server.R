@@ -27,7 +27,9 @@ shinyServer(function(input, output, session){
              PlayType %in% c('Run', 'Pass')) %>%
       group_by(., YardLine) %>%
       summarise(., PassRatio = sum(PlayType == 'Pass') / n()) %>%
-      ggplot(., aes(x = YardLine, y = PassRatio)) + geom_smooth()
+      ggplot(., aes(x = YardLine, y = PassRatio)) +
+      geom_point() +
+      geom_smooth()
   })
   
   output$playtype_success_vs_fieldpos <- renderPlotly({
@@ -36,7 +38,9 @@ shinyServer(function(input, output, session){
              PlayType %in% c('Run', 'Pass')) %>%
       group_by(., YardLine, PlayType) %>%
       summarise(., AvgYards = median(Yards.Gained)) %>%
-      ggplot(., aes(x=YardLine, y=AvgYards)) + geom_smooth() + facet_grid(.~PlayType)
+      ggplot(., aes(x=YardLine, y=AvgYards)) +
+      geom_point() +
+      geom_smooth() + facet_grid(.~PlayType)
   })
   
   output$eventual_first_down_probs <- renderPlot({
